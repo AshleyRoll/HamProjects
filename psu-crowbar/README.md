@@ -21,11 +21,11 @@ our radios.
 This design is suitable to a power supply up to **30 Amps** at 13.8V, and is designed
 for standard linear supplies.
 
-Operation on a switch-mode supply has not been verified, but should work to some extent,
-however the design relied on the power supply to blow its fuse and it is
-uncertain what the failure mode behaviour on the SMPS would be.
+Operation on a switch-mode supply has not been verified.
 
 **IT IS CRITICAL THAT THE POWER SUPPLY HAS A CORRECTY RATED FUSE FITTED FOR SAFE OPERATION**
+
+**ALWAYS HAVE A SUITABLE FUSE ON THE OUTPUT OF THE POWER SUPPLY BEFORE THE CROWBAR**
 
 ## Theory of operation
 
@@ -34,14 +34,13 @@ device is trigged it is capable of handling a hefty current for a short period.
 
 We arrange a voltage sense circuit so that we can trigger the SCR if the rail voltage
 goes over a threshold. Once triggered, it will continue to conduct and short the rails
-until voltage is removed (by blowing the line fuse on the power supply, or by the operator
+until voltage is removed (by blowing the fuse on the power supply output, or by the operator
 turning off the supply).
 
 The circuit is not designed to constantly handle the full rated current, it is designed to
 rapidly clear the fuse and disable the supply.
 
-**WARNING: Do not operate this device without the correctly rated fuse in the power
-supply.**
+**WARNING: Do not operate this device without the correctly rated fuse in the power supply output.**
 
 U1 (TL431) is a precision voltage reference and in this design is configured as a voltage
 switch. When the voltage at the reference input (pin 1) exceeds 2.495V, it will turn on hard
@@ -71,9 +70,10 @@ forward, if you follow the board markings and [BOM](pdf/bill-of-materials.txt).
 
 The internal height of the tube is not enough to allow TO-92 packages to be mounted
 vertically and so I have indicated on the overlay they need to be laid back. The flat side
-is up, so you can read the markings. Bend the centre lead down as close to the body as you can,
+is up, so you can read the markings. Bend the centre lead down close to the body,
 then the two outside legs are bent down to match the holes on the PCB. Try the keep the legs
-short as you can to ensure the case doesn't fowl any other parts.
+short as you can to ensure the case doesn't fowl any other parts. I used some tweezers to 
+make the bends.
 
 The caps should be carefully positioned low. The LED is best mounted to so the it rests
 against the edge of the PCB and the lead run back along the board to the pads. This way
@@ -86,8 +86,10 @@ The legs are then fed through the slots, soldered to the PCB and trimmed off.
 If you are substituting a different SCR, you will need to deal with tab isolation and mounting
 but remember, there can be substantial current when it fires, so keep the leads short!
 
-The crowbar circuit is designed to be connected by 2 stout wires (I suggest 12 AWG) to lugs
-screwed into the power supply output terminals (in parallel to the leads going to the radio(s).
+The crowbar circuit is designed to be connected by 2 stout wires which are connected
+**AFTER** the DC fuse and before the radio, so it can short the radio end of the fuse
+to clear it.
+
 These leads are soldered directly to the large pads and if possible this solder is extended back
 to the SCR leads. This is the high current path so care should be taken to minimised lead
 resistance.
@@ -146,11 +148,41 @@ different supply rails. For instance a 24V supply.
 
 ## What do I do if it triggers?
 
-1. Turn off the supply as soon as possible.
+1. Turn off the supply as soon as possible and remove mains power.
 2. Fix or replace the supply, you likely have a shorted pass transistor in the regulator
-   **It is critical the the fuse is replaced with the correct value, and any new PSU's
-fuse is also inspected prior to service**
+   **It is critical the the fuse is replaced with the correct value, and any new PSU's fuse is also inspected prior to service**
 3. Disassemble and inspect the crowbar circuit and discard if there is any damage
 4. Re-test the crowbar using the calibration procedure
+
+## Validation
+
+I assembled the circuit and connected it to a bench power supply set for 13.8V and a current limit of 500mA.
+
+The Crobar in this test is configured to fire at just over 16V.
+
+The power supply allows me to enter a new voltage setting and apply it, so the voltage step
+occurs quickly.
+
+
+The 4 channels of my 'scope where connected to the circuit:
+1. Input Voltage (yellow trace)
+2. SCR Gate (blue trace)
+3. Output of U1, R4 and R5. (purple trace)
+4. U1 Reference Pin (green trace)
+
+[[test/test01.png]]
+
+Note the time scale is 20us a division.
+
+We see channel 1 (input voltage, yellow) steady at 13.8V for approximately 2.5 divisions, then it starts
+to ramp up. Channel 3 (U1 output, purple) follows the voltage up (note it is 5V a division).
+
+We can clearly see when U1 begings to turn on and when the SCR fires killing the input voltage.
+
+This time is approximately 17us.
+
+
+
+
 
 
