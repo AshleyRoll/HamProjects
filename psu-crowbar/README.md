@@ -156,7 +156,7 @@ different supply rails. For instance a 24V supply.
 
 ## Validation
 
-I assembled the circuit and connected it to a bench power supply set for 13.8V and a current limit of 500mA.
+I assembled the circuit and connected it to a bench power supply set for 13.8V and a current limit of 1A.
 
 The Crobar in this test is configured to fire at just over 16V.
 
@@ -168,20 +168,26 @@ The 4 channels of my 'scope where connected to the circuit:
 1. Input Voltage (yellow trace)
 2. SCR Gate (blue trace)
 3. Output of U1, R4 and R5. (purple trace)
-4. U1 Reference Pin (green trace)
+4. Q1 Collector (green trace)
 
 ![Scope Capture](test/test01.png?raw=true)
 
 Note the time scale is 20us a division.
 
-We see channel 1 (input voltage, yellow) steady at 13.8V for approximately 2.5 divisions, then it starts
-to ramp up. Channel 3 (U1 output, purple) follows the voltage up (note it is 5V a division).
+We see channel 1 (input voltage, yellow) ramp up. Channel 3 (U1 output, purple) follows 
+the voltage up (note it is 5V a division).
 
-We can clearly see when U1 begings to turn on and when the SCR fires killing the input voltage.
+We can clearly see when U1 begings to turn on in Channel 3, as it starts to slope down.
+This begins to turn on Q1. Channel 4 (Q1 Collector, green) starts to rise. It hits about 2.2V and 
+at the same time Channel 2 (other side of R7, 33R) hits about 0.8V. The gate is now sinking
+approximately 40mA (2.2V-0.8V)/33ohms (The threshold current for this SCR is specified at 50mA.)
 
-This time is approximately 17us.
+About 2us after the voltage at the collector of Q1 began to rise, the SCR has fired and the 
+input voltage collapses.
 
-
+The complete process takes approximately 10us from over voltage to shorted supply. The 
+fuse should blow shortly after this point and isolate the radio and crowbar from
+the power supply.
 
 
 
