@@ -170,7 +170,7 @@ The 4 channels of my 'scope where connected to the circuit:
 3. Output of U1, R4 and R5. (purple trace)
 4. U1 Reference Pin (green trace)
 
-[[test/test01.png]]
+![Scope Capture](test/test01.png?raw=true)
 
 Note the time scale is 20us a division.
 
