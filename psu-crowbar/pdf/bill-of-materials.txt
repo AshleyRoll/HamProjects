@@ -12,7 +12,7 @@ R3    	1K2     	RES500   			1       	RES-12.7/7.6x2.5
 R4    	470     	RES500   			1       	RES-12.7/7.6x2.5	           
 R5    	1K2     	RES500   			1       	RES-12.7/7.6x2.5	           
 R6    	330     	RES500   			1       	RES-12.7/7.6x2.5	           
-R7    	330     	RES500   			1       	RES-12.7/7.6x2.5	           
+R7    	33	     	RES500   			1       	RES-12.7/7.6x2.5	           
 R8    	470     	RES500   			1       	RES-12.7/7.6x2.5	           
 R9    	1K2     	RES500   			1       	RES-12.7/7.6x2.5	           
 U1    	TL431A  	TL431ACLP			1       	TO-92-FLAT      	           
