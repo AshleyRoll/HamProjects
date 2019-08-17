@@ -7,8 +7,8 @@ supply goes short circuit.
 Often the power supplies we use don't contain any internal crowbar and so have
 killed radios in the past.
 
-- [Schematic (pdf)](pdf/crobar-revA-schematic.pdf)
-- [PCB Overlay (pdf)](pdf/crobar-revA-pcb-overlay.pdf)
+- [Schematic (pdf)](pdf/crowbar-revA-schematic.pdf)
+- [PCB Overlay (pdf)](pdf/crowbar-revA-pcb-overlay.pdf)
 - [Bill Of Materials](pdf/bill-of-materials.txt)
 - [Diptrace Design Files](design)
 
@@ -31,7 +31,7 @@ Operation on a switch-mode supply has not been verified.
 ## Theory of operation
 
 The circuit consists of a pretty hefty SCR, D1 placed across the supply rails. If this
-device is trigged it is capable of handling a hefty current for a short period.
+device is triggered it is capable of handling a hefty current for a short period.
 
 We arrange a voltage sense circuit so that we can trigger the SCR if the rail voltage
 goes over a threshold. Once triggered, it will continue to conduct and short the rails
@@ -92,7 +92,7 @@ The SCR, D1 is a large package **WITH AN ISOLATED TAB**, the tab is used as one 
 point, with the legs bent up approximately 3mm from the body (where the legs narrow).
 The legs are then fed through the slots, soldered to the PCB and trimmed off. 
 
-*It can be helpful to temporarily mount the SCR and PCB on the outside of the aluminium extrusing
+*It can be helpful to temporarily mount the SCR and PCB on the outside of the aluminium extrusion
 using the screws in their holes so you can align the position of the bends and hold the SCR in the
 right position for soldering.*
 
@@ -127,7 +127,7 @@ required.
 ### Setup
 
 1. Set the power supply to the desired trigger voltage, 16V is a reasonable value
-   (13.8V +15%) or 16.6V (13.8V + 20%). However I recommend reading the datasheet
+   (13.8V +15%) or 16.6V (13.8V + 20%). However I recommend reading the data sheet
    for your radio to determine a safe value.
 2. Set the current limit on the supply to 200mA (0.2A)
 3. Set R2 fully clockwise. This will be the maximum trigger voltage.
@@ -175,7 +175,7 @@ different supply rails. For instance a 24V supply.
 
 I assembled the circuit and connected it to a bench power supply set for 13.8V and a current limit of 1A.
 
-The Crobar in this test is configured to fire at just over 16V.
+The Crowbar in this test is configured to fire at just over 16V.
 
 The power supply allows me to enter a new voltage setting and apply it, so the voltage step
 occurs quickly.
@@ -194,7 +194,7 @@ Note the time scale is 20us a division.
 We see channel 1 (input voltage, yellow) ramp up. Channel 3 (U1 output, purple) follows 
 the voltage up (note it is 5V a division).
 
-We can clearly see when U1 begings to turn on in Channel 3, as it starts to slope down.
+We can clearly see when U1 begins to turn on in Channel 3, as it starts to slope down.
 This begins to turn on Q1. Channel 4 (Q1 Collector, green) starts to rise. It hits about 2.2V and 
 at the same time Channel 2 (other side of R7, 33R) hits about 0.8V. The gate is now sinking
 approximately 40mA (2.2V-0.8V)/33ohms (The threshold current for this SCR is specified at 50mA.)
@@ -206,6 +206,13 @@ The complete process takes approximately 10us from over voltage to shorted suppl
 fuse should blow shortly after this point and isolate the radio and crowbar from
 the power supply.
 
+## Testing
 
+Additional tests were made with 5A, 10A, and 30A blade style fuses in line. The circuit was
+adjusted to trip at the lowest voltage (about 13V). The leads were then placed across
+a fully charged 12V battery, causing the crowbar to activate and open the fuse. 
+
+In all the tests, including the 30A one, the fuse blew instantly and no discernible
+heat was generated in the SCR, even without the aluminium case.
 
 
