@@ -65,8 +65,14 @@ aluminium square tubing. This is
 [available from Bunnings](https://www.bunnings.com.au/metal-mate-30-x-15-x-2mm-x-1m-aluminium-rectangle-tube_p1130544)
 in Australia, and I'm sure similar hardware stores elsewhere.
 
+![Enclosure Detail](img/case.jpg?raw=true)
+
 Most parts are mounted directly to the PCB. Resistors and capacitors are straight
 forward, if you follow the board markings and [BOM](pdf/bill-of-materials.txt).
+
+![Board Top](img/top-view.jpg?raw=true)
+
+![Board Bottom](img/bottom-view.jpg?raw=true)
 
 The internal height of the tube is not enough to allow TO-92 packages to be mounted
 vertically and so I have indicated on the overlay they need to be laid back. The flat side
@@ -75,32 +81,39 @@ then the two outside legs are bent down to match the holes on the PCB. Try the k
 short as you can to ensure the case doesn't fowl any other parts. I used some tweezers to 
 make the bends.
 
+![Board Bottom](img/detail-view.jpg?raw=true)
+
 The caps should be carefully positioned low. The LED is best mounted to so the it rests
 against the edge of the PCB and the lead run back along the board to the pads. This way
 it will shine out the tube end.
 
 The SCR, D1 is a large package **WITH AN ISOLATED TAB**, the tab is used as one mounting
 point, with the legs bent up approximately 3mm from the body (where the legs narrow).
-The legs are then fed through the slots, soldered to the PCB and trimmed off.
+The legs are then fed through the slots, soldered to the PCB and trimmed off. 
+
+*It can be helpful to temporarily mount the SCR and PCB on the outside of the aluminium extrusing
+using the screw holes so you can align the position of the bends and hold the SCR in the
+right position for soldering.*
 
 If you are substituting a different SCR, you will need to deal with tab isolation and mounting
 but remember, there can be substantial current when it fires, so keep the leads short!
 
-The crowbar circuit is designed to be connected by 2 stout wires which are connected
+The crowbar circuit is designed to be connected by two stout wires which are connected
 **AFTER** the DC fuse and before the radio, so it can short the radio end of the fuse
 to clear it.
 
 These leads are soldered directly to the large pads and if possible this solder is extended back
 to the SCR leads. This is the high current path so care should be taken to minimised lead
-resistance.
-
-**TODO:** Photos coming soon of the assembly
+resistance. I used a stainless steel tool to hold down the wires while soldering. The
+solder won't stick to the steel easily.
 
 Once you complete calibration (see below), the assembly can be mounted into the
 pre-drilled tube. Two M3 bolts are used to secure the SCR and the PCB. A small
-insulating spacer (perhaps some PCB scraps with a 3.5mm hole drilled) will be needed
-to raise the PCB off the tubing. It is also recommended that a plastic sleeve is
-placed above and below the PCB, to prevent shorts.
+insulating spacer (perhaps some washers or PCB scraps with a 3.5mm hole drilled)
+will be needed to raise the PCB off the tubing. Note that the hole dimensions are 
+approximate and may vary if you bend the SCR lead at a different place.
+
+![End View of PCB standoff](img/end-view-mounting.jpg?raw=true)
 
 ## Calibration
 
@@ -170,7 +183,7 @@ The 4 channels of my 'scope where connected to the circuit:
 3. Output of U1, R4 and R5. (purple trace)
 4. Q1 Collector (green trace)
 
-![Scope Capture](test/test01.png?raw=true)
+![Scope Capture](img/test01.png?raw=true)
 
 Note the time scale is 20us a division.
 
