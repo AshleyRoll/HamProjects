@@ -9,6 +9,7 @@ killed radios in the past.
 
 - [Schematic (pdf)](pdf/crobar-revA-schematic.pdf)
 - [PCB Overlay (pdf)](pdf/crobar-revA-pcb-overlay.pdf)
+- [Bill Of Materials](pdf/bill-of-materials.txt)
 - [Diptrace Design Files](design)
 
 A crowbar is a feature in higher end bench power supplies and often the over-voltage
@@ -92,7 +93,7 @@ point, with the legs bent up approximately 3mm from the body (where the legs nar
 The legs are then fed through the slots, soldered to the PCB and trimmed off. 
 
 *It can be helpful to temporarily mount the SCR and PCB on the outside of the aluminium extrusing
-using the screw holes so you can align the position of the bends and hold the SCR in the
+using the screws in their holes so you can align the position of the bends and hold the SCR in the
 right position for soldering.*
 
 If you are substituting a different SCR, you will need to deal with tab isolation and mounting
@@ -106,6 +107,9 @@ These leads are soldered directly to the large pads and if possible this solder 
 to the SCR leads. This is the high current path so care should be taken to minimised lead
 resistance. I used a stainless steel tool to hold down the wires while soldering. The
 solder won't stick to the steel easily.
+
+**VERIFY CORRECT POLARITY** There is a `+` printed on the board for the positive
+connection.
 
 Once you complete calibration (see below), the assembly can be mounted into the
 pre-drilled tube. Two M3 bolts are used to secure the SCR and the PCB. A small
