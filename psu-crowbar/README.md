@@ -28,6 +28,14 @@ Operation on a switch-mode supply has not been verified.
 
 **ALWAYS HAVE A SUITABLE FUSE ON THE OUTPUT OF THE POWER SUPPLY BEFORE THE CROWBAR**
 
+## Kits
+
+I have a kit available. This contains the PCB and all parts mounted to it, including
+the SCR. However you will need to source your own enclosure, mounting hardware, cable
+and fuse.
+
+Please contact me if you're interested. See [my profile](https://github.com/AshleyRoll)
+
 ## Theory of operation
 
 The circuit consists of a pretty hefty SCR, D1 placed across the supply rails. If this
