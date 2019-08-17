@@ -4,8 +4,7 @@ This repository contains various electronics projects for Ham Radio.
 
 
 
-
-## PSU Crowbar
+## [PSU Crowbar](psu-crowbar)
 
 The [PSU Crowbar](psu-crowbar) is designed to protect a radio from over voltage damage. This
 can occur if the series pass transistor of your 13.8V high current linear power
