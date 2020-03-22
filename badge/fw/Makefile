@@ -1,113 +1,62 @@
 #
-#  There exist several targets which are by default empty and which can be 
-#  used for execution of your targets. These targets are usually executed 
-#  before and after some main targets. They are: 
+# Badge Firmware
 #
-#     .build-pre:              called before 'build' target
-#     .build-post:             called after 'build' target
-#     .clean-pre:              called before 'clean' target
-#     .clean-post:             called after 'clean' target
-#     .clobber-pre:            called before 'clobber' target
-#     .clobber-post:           called after 'clobber' target
-#     .all-pre:                called before 'all' target
-#     .all-post:               called after 'all' target
-#     .help-pre:               called before 'help' target
-#     .help-post:              called after 'help' target
+# Requires Microchip XC8 MPASM assembler
 #
-#  Targets beginning with '.' are not intended to be called on their own.
-#
-#  Main targets can be executed directly, and they are:
-#  
-#     build                    build a specific configuration
-#     clean                    remove built files from a configuration
-#     clobber                  remove all built files
-#     all                      build all configurations
-#     help                     print help mesage
-#  
-#  Targets .build-impl, .clean-impl, .clobber-impl, .all-impl, and
-#  .help-impl are implemented in nbproject/makefile-impl.mk.
-#
-#  Available make variables:
-#
-#     CND_BASEDIR                base directory for relative paths
-#     CND_DISTDIR                default top distribution directory (build artifacts)
-#     CND_BUILDDIR               default top build directory (object files, ...)
-#     CONF                       name of current configuration
-#     CND_ARTIFACT_DIR_${CONF}   directory of build artifact (current configuration)
-#     CND_ARTIFACT_NAME_${CONF}  name of build artifact (current configuration)
-#     CND_ARTIFACT_PATH_${CONF}  path to build artifact (current configuration)
-#     CND_PACKAGE_DIR_${CONF}    directory of package (current configuration)
-#     CND_PACKAGE_NAME_${CONF}   name of package (current configuration)
-#     CND_PACKAGE_PATH_${CONF}   path to package (current configuration)
-#
-# NOCDDL
+
+PROJECT := badge
+
+# Folder configurations
+SRCDIR := src
+BUILDDIR := obj
+TARGETDIR := bin
 
 
-# Environment 
-MKDIR=mkdir
-CP=cp
-CCADMIN=CCadmin
-RANLIB=ranlib
+# Processor type
+MP_PROCESSOR_OPTION=10lf322
 
 
-# build
-build: .build-post
+# define the location XC8 was installed
+# and then use that to define the various tools we need
+XC8_LOCATION=/opt/microchip/xc8/v2.10
 
-.build-pre:
-# Add your pre 'build' code here...
-
-.build-post: .build-impl
-# Add your post 'build' code here...
-
-
-# clean
-clean: .clean-post
-
-.clean-pre:
-# Add your pre 'clean' code here...
-# WARNING: the IDE does not call this target since it takes a long time to
-# simply run make. Instead, the IDE removes the configuration directories
-# under build and dist directly without calling make.
-# This target is left here so people can do a clean when running a clean
-# outside the IDE.
-
-.clean-post: .clean-impl
-# Add your post 'clean' code here...
+MP_AS=${XC8_LOCATION}/mpasmx/mpasmx
+MP_LD=${XC8_LOCATION}/mpasmx/mplink
+MP_HEX=${XC8_LOCATION}/mpasmx/mp2hex
 
 
-# clobber
-clobber: .clobber-post
+# Find the sources, dependencies and compute the object files
 
-.clobber-pre:
-# Add your pre 'clobber' code here...
+DEPENDENCIES := $(SRCDIR)/morsecode.inc		# Applies to all asm files because.. lazy and dependency detection is hard in MPMASM
 
-.clobber-post: .clobber-impl
-# Add your post 'clobber' code here...
+SRCEXT := asm
+SOURCES := $(shell find $(SRCDIR) -type f -name \*.$(SRCEXT))
+OBJECTS := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.o))
 
-
-# all
-all: .all-post
-
-.all-pre:
-# Add your pre 'all' code here...
-
-.all-post: .all-impl
-# Add your post 'all' code here...
+TARGET := $(TARGETDIR)/$(PROJECT).hex
 
 
-# help
-help: .help-post
-
-.help-pre:
-# Add your pre 'help' code here...
-
-.help-post: .help-impl
-# Add your post 'help' code here...
+$(TARGET): $(OBJECTS) Makefile
+	@mkdir --parents $(dir $@)
+	@echo "[LNK] $(@:.hex=.coff)"
+	@$(MP_LD) -p$(MP_PROCESSOR_OPTION) -w -x -m"$@.map" $(MP_LINKER_DEBUG_OPTION) -o"$(@:.hex=.coff)" $(OBJECTS)
+	@echo "[HEX] $@"
+	@$(MP_HEX) $(@:.hex=.coff)
 
 
+# Assembly rule, Note that we assume that all ASM files are dependent on all the includes..
+$(BUILDDIR)/%.o: $(SRCDIR)/%.$(SRCEXT) Makefile $(DEPENDENCIES)
+	@mkdir --parents $(dir $@)
+	@echo "[ASM] $<"
+	@${MP_AS} -m -p$(MP_PROCESSOR_OPTION)  -l"$(@:.o=.lst)" -e"$(@:.o=.err)" $(ASM_OPTIONS) -o"$@" "$<"
 
-# include project implementation makefile
-include nbproject/Makefile-impl.mk
 
-# include project make variables
-include nbproject/Makefile-variables.mk
+clean:
+	@echo "Cleaning $(PROJECT)..."
+	@$(RM) -r $(BUILDDIR) $(TARGETDIR)
+
+.PHONY:	clean dump
+
+.DEFAULT_GOAL := $(TARGET)
+
+
