@@ -2,8 +2,8 @@
 ; Morse Code timing and generation
 ; --------------------------------
 ;
-; Morse words per minute is calculated of the PARIS word, resulting in
-; 50 periods (dit times) per work. at 5 wpm, that is 250 periods per minute
+; Morse words per minute is calculated off the PARIS word, resulting in
+; 50 periods (dit times) per word. at 5 wpm, that is 250 periods per minute
 ; or 250/60 = 240ms per period.
 ;
 ; Timer0 Configuration
