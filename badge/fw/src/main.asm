@@ -3,14 +3,14 @@
 ; ---------------------------
 ;
 ; This code generates a periodic morse code signal sending the configured
-; call sign. 
-;	
-; RUN on A4 or higher hardware revision or the power consumption will be higher 
+; call sign.
+;
+; RUN on A4 or higher hardware revision or the power consumption will be higher
 ; than documented. (see Errata)
 ;
 ; The PIC is left in sleep for most of the time, and we use interrupts to wake
 ; us to move to the next state. Eventually we stop sending the Morse and sleep
-; forever. The user will need to reset (pushbutton) the PIC to begin the 
+; forever. The user will need to reset (pushbutton) the PIC to begin the
 ; sending process again.
 ;
 ; The Morse signalling will be on RA2, High (1) = On, Low (0) = Off
@@ -20,11 +20,11 @@
 	#include <p10lf322.inc>
 	#include <morsecode.inc>
 
-	
+	; number of times to send the call sign
 	constant CallSignRepeatCountBeforeShutdown = 5
-	
+
 ;
-; Define the Call sign or message here. One symbol per line to keep the 
+; Define the Call sign or message here. One symbol per line to keep the
 ; macro assembler happy
 ;
 ; Letters and Numbers: _A, _B, ... _0, _1, _2, ...
@@ -48,8 +48,8 @@ CALL_SIGN	macro
 	_S
 	_H
 	;------------------------
-	endm	
-	
+	endm
+
 ; CONFIG
  __CONFIG _FOSC_INTOSC & _BOREN_OFF & _WDTE_OFF & _PWRTE_OFF & _MCLRE_ON & _CP_OFF & _LVP_ON & _LPBOR_OFF & _BORV_LO & _WRT_OFF
 
@@ -58,7 +58,7 @@ CALL_SIGN	macro
 ;*******************************************************************************
 MAIN_DATA UDATA						; let linker place main RAM data
 Repeats RES 1
- 
+
 
 
 ;*******************************************************************************
@@ -71,14 +71,14 @@ RES_VECT	CODE	0x0000			; processor reset vector
 ; Interrupt Vector - currently not in use, but if it is hit, we disable interrupts
 ;*******************************************************************************
 ISR			CODE	0x0004			; interrupt vector location
-	RETURN				; leave interrupts disabled. 
-	
+	RETURN				; leave interrupts disabled.
+
 ;*******************************************************************************
 ; MAIN PROGRAM
 ;*******************************************************************************
 MAIN_PROG CODE					; let linker place main program
 
- 
+
 ;
 ; Power on reset
 ;
@@ -86,13 +86,13 @@ MAIN_PROG CODE					; let linker place main program
 ;
 START
 	CLRF	OSCCON				; 31KHz operation
+	; Power config
+	BSF     VREGCON,VREGPM1		; Put voltage regulator in Power Save mocde
 	; make all pins digital outputs (MCLR is configured input by config bits)
 	; Note that MCLR is enabled and therefore it has its weak pullup enabled by config
 	CLRF	ANSELA
 	CLRF	LATA
 	CLRF	TRISA
-	; Power config
-	BSF     VREGCON,VREGPM1		; Put voltage regulator in Power Save mocde
 	CALL	InitialiseTimer0
 	CLRF	INTCON				; Disable all interrupts and clear flags
 	GOTO	MAIN
@@ -112,17 +112,20 @@ Loop
 	CALL	InitialiseTimer0
 	; Send call sign
 	CALL_SIGN
-	
+
 	; Long delay between
+	; TODO: add a longer delay process here.
 	MOVLW	MaxMorsePeriods		; 7
 	CALL	WaitMorsePeriods
-	
+
 	DECFSZ	Repeats,F			; Loop until Repeats is zero
 	GOTO	Loop
 
 	; sleep here forever, we have finished sending the callsign for now.
-	; we enter 
+	; we enter
+Forever
 	SLEEP
-	GOTO	$-1
-	
+	NOP
+	GOTO	Forever
+
 	END
