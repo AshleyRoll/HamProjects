@@ -1,4 +1,4 @@
-#
+#####################################################################
 # Badge Firmware
 #
 # Requires Microchip XC8 MPASM assembler and MPLABX installed (just for PicKit3 usage)
@@ -9,6 +9,27 @@
 # Program a chip using PicKit3
 #	make flash
 #
+# Archlinux:
+# You need to following AUR packages
+#   - microchip-mplabx-bin    (for the pickkit3 programming utility)
+#   - microchip-mplabxc8-bin  (MPASM and Xc8 compiler)
+#
+#
+# MPLABX and the programmer tool require java 8 to work properly, ensure you are running this by:
+#  sudo archlinux-java set java-8-openjdk/jre
+#
+#####################################################################
+
+# You will probably have to adjust these paths
+#
+# define the location XC8 was installed
+# and then use that to define the various tools we need
+XC8_LOCATION=/opt/microchip/xc8/v2.10
+MPLABX_LOCATION=/opt/microchip/mplabx/v5.30
+
+#####################################################################
+# Unlikely that you need to edit below here...
+#####################################################################
 
 PROJECT := badge
 
@@ -19,12 +40,6 @@ TARGETDIR := bin
 
 # Processor type
 MP_PROCESSOR_OPTION=10lf322
-
-
-# define the location XC8 was installed
-# and then use that to define the various tools we need
-XC8_LOCATION=/opt/microchip/xc8/v2.10
-MPLABX_LOCATION=/opt/microchip/mplabx/v5.30
 
 MP_AS=$(XC8_LOCATION)/mpasmx/mpasmx
 MP_LD=$(XC8_LOCATION)/mpasmx/mplink
@@ -49,10 +64,10 @@ PROG_DEVICE := PicKit3 -p
 # Main target the hex file. this is the default target
 $(TARGET): $(OBJECTS) Makefile
 	@mkdir --parents $(dir $@)
-	@echo "[LNK] $(@:.hex=.coff)"
-	@$(MP_LD) -p$(MP_PROCESSOR_OPTION) -w -x -m"$@.map" $(MP_LINKER_DEBUG_OPTION) -o"$(@:.hex=.coff)" $(OBJECTS)
+	@echo "[LNK] $(@:.hex=.cof)"
+	@$(MP_LD) -p$(MP_PROCESSOR_OPTION) -w -x -m"$@.map" $(MP_LINKER_DEBUG_OPTION) -o"$(@:.hex=.cof)" $(OBJECTS)
 	@echo "[HEX] $@"
-	@$(MP_HEX) $(@:.hex=.coff)
+	@$(MP_HEX) $(@:.hex=.cof)
 
 
 # Assembly rule, Note that we assume that all ASM files are dependent on all the includes..
@@ -66,7 +81,9 @@ $(BUILDDIR)/%.o: $(SRCDIR)/%.$(SRCEXT) Makefile $(DEPENDENCIES)
 # the programming script for the mdb.sh program
 $(PROG_CMDS): Makefile
 	@echo "Building flash programming command file $@"
-	@$(file > $@,device PIC$(MP_PROCESSOR_OPTION))
+	@$(file > $@,)
+	@$(file >> $@,set system.yestoalldialog true)
+	@$(file >> $@,device PIC$(MP_PROCESSOR_OPTION))
 	@$(file >> $@,hwtool $(PROG_DEVICE))
 	@$(file >> $@,program "$(TARGET)")
 	@$(file >> $@,quit)

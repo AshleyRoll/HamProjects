@@ -4,18 +4,9 @@
 ; Each character is sent using the Dit and Dah routines that
 ; insert a single morse period delay between symbols.
 ;
-; At the end of each letter, we need a 3 period space, but 
+; At the end of each letter, we need a 3 period space, but
 ; will have already had a 1 period delay, so wait 2 more
 
-	constant MaxMorsePeriods = 7
-	
-;
-; Dit and Dah Routines
-	extern Dit				; No params, W is destroyed
-	extern Dah				; No params, W is destroyed
-	extern WaitMorsePeriods	; W reg = number of periods to wait. Max = 7. 
-	extern InitialiseTimer0	; must call to setup timer before calling other functions
-	
 ; used internally
 __EndSymbol	macro
 	MOVLW	2		; Inter character pause = 3 (2 + 1 from previous symbol)
@@ -23,7 +14,7 @@ __EndSymbol	macro
 	endm
 
 ; Symbols
-	
+
 _Space macro
 	MOVLW	4		; Inter word pause = 7 (4 + 3 from previous character)
 	CALL	WaitMorsePeriods
@@ -86,7 +77,7 @@ _Minus macro
 	CALL	Dah
 	__EndSymbol
 	endm
-	
+
 _DoubleDash macro
 	CALL	Dah
 	CALL	Dit
@@ -95,7 +86,7 @@ _DoubleDash macro
 	CALL	Dah
 	__EndSymbol
 	endm
-	
+
 ; Numbers
 
 _0 macro
@@ -188,10 +179,10 @@ _9 macro
 	__EndSymbol
 	endm
 
-	
+
 ; Letters
-	
-	
+
+
 _A macro
 	CALL	Dit
 	CALL	Dah
@@ -205,7 +196,7 @@ _B macro
 	CALL	Dit
 	__EndSymbol
 	endm
-	
+
 _C macro
 	CALL	Dah
 	CALL	Dit
@@ -240,7 +231,7 @@ _G macro
 	CALL	Dit
 	__EndSymbol
 	endm
-	
+
 _H macro
 	CALL	Dit
 	CALL	Dit
