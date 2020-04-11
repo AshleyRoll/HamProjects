@@ -4,8 +4,16 @@ This project is my wearable call sign badge. Its a PCB with my name and call
 sign, with a small micro-controller that will send my call sign as Morse on an
 LED.
 
-_This is a work in progress, updates will be made once I receive the boards from
-manufacturing and can assemble and test the badge._
+![Built Badge](built-badge.png "Built Badge")
+
+The badge remains powered constantly, but the micro-controller is in a low power
+state drawing a very tiny current (somewhere in the region of 10-20uA) so the
+CR2032 cell will last a long time in standby.
+
+When initially powered up, or when the reset button is pressed, the
+micro-controller will send out the programmed Morse Code message at about 10
+words per minute. It will repeat the message, with a small delay between, five
+times, then go back to sleep.
 
 ## Hardware
 
@@ -23,6 +31,16 @@ and a programming port on the back to allow the firmware to be updated.
 I've also added a small prototyping section with all signals accessible for
 hacking on additional circuits if desired.
 
+
+![Badge PCB](bare-badge.png "Badge PCB")
+
+On the back of the PCB is a series of pads that match the standard PicKit3
+programming cable ordering. I have a set of pogo-pins soldered to 0.1" vero
+board that seat on the pads for programming.
+
+There is a slot for a badge clip, and a pad on the back where a small brass
+tube could be soldered for a safety pin to clip the badge to your shirt.
+
 ## Firmware
 
 This is a simple `Makefile` based assembly language project. I've implemented
@@ -39,7 +57,4 @@ is pressed.
 While sending the Morse code, the micro-controller will be asleep as much as
 possible as well.
 
-Once complete I'll add some power measurements to get an idea of how long a
-cell can last powering this badge.
-
-
+Ashley Roll. VK4ASH. 2020-04-11
